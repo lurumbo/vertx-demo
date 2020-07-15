@@ -16,6 +16,11 @@ To package your application:
 ./mvnw clean package
 ```
 
+To execute your application:
+```
+java -jar target/vertx-demo-1.0.0-SNAPSHOT-fat.jar
+```
+
 To run your application:
 ```
 ./mvnw clean compile exec:java
