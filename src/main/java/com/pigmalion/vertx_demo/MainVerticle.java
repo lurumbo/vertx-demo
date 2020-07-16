@@ -46,7 +46,7 @@ public class MainVerticle extends AbstractVerticle {
   private void getUsers(RoutingContext routingContext) {
 
     vertx.eventBus().request("GET_USERS", "", reply -> {
-      logger.info("GET /users");
+      //logger.info("GET /users");
       if (reply.succeeded()) {
         String users = reply.result().body().toString();
         routingContext

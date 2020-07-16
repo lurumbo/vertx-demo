@@ -48,7 +48,7 @@ public class DBVerticle extends AbstractVerticle {
 
   private void getUsers(Message message) {
     String rawQuery = "SELECT * FROM users";
-    logger.info("Query Executed: " + rawQuery);
+    // logger.info("Query Executed: " + rawQuery);
     dbClient
       .query(rawQuery)
       .execute(res -> {
