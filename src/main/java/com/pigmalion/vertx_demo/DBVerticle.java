@@ -2,6 +2,8 @@ package com.pigmalion.vertx_demo;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.Message;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
 import io.vertx.sqlclient.*;
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 public class DBVerticle extends AbstractVerticle {
 
   private PgPool dbClient;
+
+  private Logger logger = LoggerFactory.getLogger(DBVerticle.class);
 
   @Override
   public void start () throws Exception {
@@ -29,10 +33,10 @@ public class DBVerticle extends AbstractVerticle {
     dbClient.getConnection(res -> {
 
       if (res.succeeded()) {
-          System.out.println("Database Connection Succeeded");
+          logger.info("Database Connection Succeeded");
           vertx.eventBus().consumer("GET_USERS", this::getUsers);
       } else {
-        System.err.println("Database Connection failed: " + res.cause().getMessage());
+        logger.error("Database Connection failed: " + res.cause().getMessage());
         return;
       }
 
@@ -43,8 +47,10 @@ public class DBVerticle extends AbstractVerticle {
   }
 
   private void getUsers(Message message) {
+    String rawQuery = "SELECT * FROM users";
+    logger.info("Query Executed: " + rawQuery);
     dbClient
-      .query("SELECT * FROM users")
+      .query(rawQuery)
       .execute(res -> {
         if (res.succeeded()) {
           ArrayList<User> usersArrayList = new ArrayList<>();
@@ -56,7 +62,7 @@ public class DBVerticle extends AbstractVerticle {
           }
           message.reply(usersArrayList.toString());
         } else {
-          System.err.println("Database Execution Query Failed: " + res.cause().getMessage());
+          logger.error("Database Execution Query Failed: " + res.cause().getMessage());
         }
       });
   }
