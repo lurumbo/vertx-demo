@@ -4,6 +4,36 @@ image:https://img.shields.io/badge/vert.x-3.9.1-purple.svg[link="https://vertx.i
 
 This application was generated using http://start.vertx.io
 
+== Project Set Up
+
+This project exposes an endpoint GET /users, you can access to it like this:
+```
+http://localhost:8080/users
+```
+
+This endpoint consumes users located in a dockerized database, you can to build the image and run it using:
+
+Go to docker folder:
+```
+cd src/main/docker/postgres
+```
+
+
+Build the docker image:
+```
+docker build --tag usersdb_postgres .
+```
+
+Create the container:
+```
+docker run --name usersdb-postgres -p 5432:5432 -d usersdb_postgres
+```
+
+
+For more info:
+https://hub.docker.com/_/postgres
+
+
 == Building
 
 To launch your tests:
